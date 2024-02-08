@@ -63,4 +63,32 @@ std::string const & GetLocalizedSpeedUnits()
 {
   return GetLocalizedSpeedUnits(measurement_utils::GetMeasurementUnits());
 }
+
+///old stuff
+
+std::string GetLocalizedTypeName(std::string const & type)
+{
+  return "wowlocalizedbrandname";
+}
+
+std::string GetLocalizedBrandName(std::string const & brand)
+{
+  return "wowlocalizedbrandname";
+}
+
+std::string GetLocalizedString(std::string const & key)
+{
+  return "wowlocalizedstring";
+}
+
+std::string GetCurrencySymbol(std::string const & currencyCode)
+{
+  return "wowcurrencysymbol";
+}
+
+std::string GetLocalizedMyPositionBookmarkName()
+{
+  return "wowlocalizedpositionbookmarkname";
+}
+
 }  // namespace platform

@@ -53,7 +53,6 @@ set(SRC
   app/organicmaps/platform/GuiThread.cpp
   app/organicmaps/platform/HttpThread.cpp
   app/organicmaps/platform/Language.cpp
-  app/organicmaps/platform/Localization.cpp
   app/organicmaps/platform/AndroidPlatform.cpp
   app/organicmaps/platform/PThreadImpl.cpp
   app/organicmaps/platform/SecureStorage.cpp
