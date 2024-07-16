@@ -1,0 +1,25 @@
+<style>
+:root {
+    color-scheme: light dark;
+    --primary-color: black;
+    --secondary-color: #555555;
+    --link-color: #1e96f0;
+    --background-color: white;
+    --separator-color: #0e0e0e;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #b5b5b5;
+        --secondary-color: #858585;
+        --link-color: #2ea6ff;
+        --background-color: black;
+        --separator-color: #0a0a0a;
+    }
+
+    html {
+        color: var(--primary-color);
+        background-color: var(--background-color);
+    }
+}
+</style>
