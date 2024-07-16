@@ -1,4 +1,3 @@
-<style>
 :root {
     color-scheme: light dark;
     --primary-color: black;
@@ -16,10 +15,10 @@
         --background-color: black;
         --separator-color: #0a0a0a;
     }
-
-    html {
-        color: var(--primary-color);
-        background-color: var(--background-color);
-    }
 }
-</style>
+
+/* Apply the color variables */
+html {
+    color: var(--primary-color);
+    background-color: var(--background-color);
+}

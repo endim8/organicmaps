@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import app.organicmaps.R;
 import app.organicmaps.base.BaseMwmFragment;
+import app.organicmaps.util.Constants;
 import app.organicmaps.util.Utils;
 
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class PlaceDescriptionFragment extends BaseMwmFragment
   {
     View root = inflater.inflate(R.layout.fragment_place_description, container, false);
     WebView webView = root.findViewById(R.id.webview);
-    webView.loadData(mDescription + SOURCE_SUFFIX, Utils.TEXT_HTML, Utils.UTF_8);
+    webView.loadDataWithBaseURL(Constants.Url.CSS_ROOT,Constants.Url.CSS_PREFIX + mDescription + SOURCE_SUFFIX, Utils.TEXT_HTML, Utils.UTF_8, null);
     webView.setVerticalScrollBarEnabled(true);
     return root;
   }
