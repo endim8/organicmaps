@@ -105,6 +105,7 @@ public:
   /// Place traits
   bool IsFeature() const { return m_featureID.IsValid(); }
   bool IsBookmark() const;
+  bool IsIconSelected() const;
   bool IsTrack() const { return m_trackId != kml::kInvalidTrackId; }
   bool IsMyPosition() const { return m_selectedObject == df::SelectionShape::ESelectedObject::OBJECT_MY_POSITION; }
   bool IsRoutePoint() const { return m_isRoutePoint; }
@@ -113,6 +114,7 @@ public:
 
   /// Edit and add
   bool ShouldShowAddPlace() const;
+  bool ShouldShowAddNote() const;
   bool ShouldShowAddBusiness() const { return m_canEditOrAdd && IsBuilding(); }
   bool ShouldShowEditPlace() const;
 

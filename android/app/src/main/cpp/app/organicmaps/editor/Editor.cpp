@@ -1,4 +1,4 @@
-﻿#include <jni.h>
+#include <jni.h>
 
 #include "app/organicmaps/core/jni_helper.hpp"
 #include "app/organicmaps/Framework.hpp"
@@ -195,6 +195,16 @@ Java_app_organicmaps_editor_Editor_nativeShouldShowAddPlace(JNIEnv *, jclass)
     return static_cast<jboolean>(false);
 
   return g_framework->GetPlacePageInfo().ShouldShowAddPlace();
+}
+
+JNIEXPORT jboolean JNICALL
+Java_app_organicmaps_editor_Editor_nativeShouldShowAddNote(JNIEnv *, jclass)
+{
+  ::Framework * frm = g_framework->NativeFramework();
+  if (!frm->HasPlacePageInfo())
+    return static_cast<jboolean>(false);
+
+  return g_framework->GetPlacePageInfo().ShouldShowAddNote();
 }
 
 JNIEXPORT jboolean JNICALL

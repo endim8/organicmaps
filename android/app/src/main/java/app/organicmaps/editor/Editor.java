@@ -58,6 +58,7 @@ public final class Editor
   public static native boolean nativeShouldShowAddPlace();
   public static native boolean nativeShouldEnableEditPlace();
   public static native boolean nativeShouldEnableAddPlace();
+  public static native boolean nativeShouldShowAddNote();
   @NonNull
   public static native int[] nativeGetEditableProperties();
 

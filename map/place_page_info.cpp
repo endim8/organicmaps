@@ -26,10 +26,24 @@ bool Info::IsBookmark() const
   return BookmarkManager::IsBookmarkCategory(m_markGroupId) && BookmarkManager::IsBookmark(m_bookmarkId);
 }
 
+bool Info::IsIconSelected() const
+{
+  auto const pt = m_mercator; // Selection mark centre
+  auto const pt2 = m_buildInfo.m_mercator; // Map feature centre
+
+  //TODO: Not sure about value, this seems to work
+  return !m2::AlmostEqualAbs(pt, pt2, 0.00001);
+}
+
 bool Info::ShouldShowAddPlace() const
 {
   auto const isPointOrBuilding = IsPointType() || IsBuilding();
   return !(IsFeature() && isPointOrBuilding);
+}
+
+bool Info::ShouldShowAddNote() const
+{
+  return m_canEditOrAdd && !IsIconSelected();
 }
 
 void Info::SetFromFeatureType(FeatureType & ft)

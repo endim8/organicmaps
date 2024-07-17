@@ -86,6 +86,8 @@
 
   <include android:visibility="gone" layout="@layout/place_page_editor"/>
 
+  <include android:visibility="gone" layout="@layout/place_page_add_note"/>
+
   <include android:visibility="gone" layout="@layout/place_page_add_business"/>
 
   <include android:visibility="gone" layout="@layout/place_page_add"/>

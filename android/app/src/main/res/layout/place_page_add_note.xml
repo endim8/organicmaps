@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/ll__note_add"
+  style="@style/PlacePageItemFrame"
+  tools:visibility="visible">
+
+  <TextView
+    android:id="@+id/tv__editor"
+    style="@style/PlacePageMetadataText.Button"
+    android:text="Add note to OSM (fix)"
+    android:gravity="center"/>
+</LinearLayout>

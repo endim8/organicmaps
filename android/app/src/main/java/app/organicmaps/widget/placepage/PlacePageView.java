@@ -120,6 +120,7 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
   private View mEditPlace;
   private View mAddOrganisation;
   private View mAddPlace;
+  private View mAddNote;
   private View mEditTopSpace;
 
   // Data
@@ -275,6 +276,8 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
     mAddOrganisation.setOnClickListener(this);
     mAddPlace = mFrame.findViewById(R.id.ll__place_add);
     mAddPlace.setOnClickListener(this);
+    mAddNote = mFrame.findViewById(R.id.ll__note_add);
+    mAddNote.setOnClickListener(this);
     mEditTopSpace = mFrame.findViewById(R.id.edit_top_space);
     latlon.setOnLongClickListener(this);
     address.setOnLongClickListener(this);
@@ -464,6 +467,7 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
       UiUtils.showIf(Editor.nativeShouldShowEditPlace(), mEditPlace);
       UiUtils.showIf(Editor.nativeShouldShowAddBusiness(), mAddOrganisation);
       UiUtils.showIf(Editor.nativeShouldShowAddPlace(), mAddPlace);
+      UiUtils.showIf(Editor.nativeShouldShowAddNote(), mAddNote);
       mEditPlace.setEnabled(Editor.nativeShouldEnableEditPlace());
       mAddOrganisation.setEnabled(Editor.nativeShouldEnableAddPlace());
       mAddPlace.setEnabled(Editor.nativeShouldEnableAddPlace());
@@ -476,7 +480,8 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
       mTvAddPlace.setTextColor(editPlaceButtonColor);
       UiUtils.showIf(UiUtils.isVisible(mEditPlace)
                      || UiUtils.isVisible(mAddOrganisation)
-                     || UiUtils.isVisible(mAddPlace), mEditTopSpace);
+                     || UiUtils.isVisible(mAddPlace)
+                     || UiUtils.isVisible(mAddNote), mEditTopSpace);
     }
     updateLinksView();
     updateOpeningHoursView();
@@ -556,6 +561,12 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
     ((MwmActivity) requireActivity()).showPositionChooserForEditor(false, true);
   }
 
+  private void addNote()
+  {
+    //TODO: Need to implement adding note from position chooser here
+    ((MwmActivity) requireActivity()).showPositionChooserForEditor(false, true);
+  }
+
   /// @todo
   /// - Why ll__place_editor and ll__place_latlon check if (mMapObject == null)
 
@@ -575,6 +586,8 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
       addOrganisation();
     else if (id == R.id.ll__place_add)
       addPlace();
+    else if (id == R.id.ll__note_add)
+      addNote();
     else if (id == R.id.ll__place_latlon)
     {
       final int formatIndex = visibleCoordsFormat.indexOf(mCoordsFormat);
