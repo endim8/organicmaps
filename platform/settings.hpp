@@ -8,8 +8,8 @@
 
 namespace settings
 {
-/// Metric or Imperial.
-extern char const * kMeasurementUnits;
+extern char const * kBigMeasurementUnits;
+extern char const * kSmallMeasurementUnits;
 
 extern char const * kDeveloperMode;
 

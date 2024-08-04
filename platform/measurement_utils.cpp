@@ -1,6 +1,7 @@
 #include "platform/locale.hpp"
 #include "platform/measurement_utils.hpp"
 #include "platform/settings.hpp"
+#include "platform/units.hpp"
 
 #include "geometry/mercator.hpp"
 
@@ -72,25 +73,35 @@ std::string_view DebugPrint(Units units)
 {
   switch (units)
   {
-  case Units::Imperial: return "Units::Imperial";
-  case Units::Metric: return "Units::Metric";
+    case Units::Mile: return "Units::Mile";
+    case Units::Kilometer: return "Units::Kilometer";
+    case Units::Meter: return "Units::Meter";
+    case Units::Foot: return "Units::Foot";
+    case Units::Yard: return "Units::Yard";
   }
   UNREACHABLE();
 }
 
-Units GetMeasurementUnits()
+std::vector<Units> GetMeasurementUnits()
 {
-  Units units = Units::Metric;
-  settings::TryGet(settings::kMeasurementUnits, units);
-  return units;
+  Units bigUnits = Units::Kilometer;
+  Units smallUnits = Units::Meter;
+  settings::TryGet(settings::kBigMeasurementUnits, bigUnits);
+  settings::TryGet(settings::kSmallMeasurementUnits, smallUnits);
+  return {bigUnits, smallUnits};
 }
 
+// Speed is passed as miles per hour
 double ToSpeedKmPH(double speed, Units units)
 {
   switch (units)
   {
-  case Units::Imperial: return MiphToKmph(speed);
-  case Units::Metric: return speed;
+    case Units::Kilometer: return MiphToKmph(speed);
+    case Units::Mile: return speed;
+    case Units::Meter:
+    case Units::Foot:
+    case Units::Yard:
+      UNREACHABLE();
   }
   UNREACHABLE();
 }
@@ -193,8 +204,12 @@ double MpsToUnits(double metersPerSecond, Units units)
 {
   switch (units)
   {
-  case Units::Imperial: return KmphToMiph(MpsToKmph(metersPerSecond)); break;
-  case Units::Metric: return MpsToKmph(metersPerSecond); break;
+    case Units::Mile: return KmphToMiph(MpsToKmph(metersPerSecond)); break;
+    case Units::Kilometer: return MpsToKmph(metersPerSecond); break;
+    case Units::Meter:
+    case Units::Foot:
+    case Units::Yard:
+      UNREACHABLE();
   }
   UNREACHABLE();
 }

@@ -20,7 +20,8 @@ namespace settings
 {
 using namespace std;
 
-char const * kMeasurementUnits = "Units";
+char const * kBigMeasurementUnits = "BigUnits";
+char const * kSmallMeasurementUnits = "SmallUnits";
 char const * kDeveloperMode = "DeveloperMode";
 
 StringStorage::StringStorage() : StringStorageBase(GetPlatform().SettingsPathForFile(SETTINGS_FILE_NAME)) {}

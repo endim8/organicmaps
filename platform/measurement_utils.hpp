@@ -2,20 +2,17 @@
 
 #include "geometry/point2d.hpp"
 #include "platform/locale.hpp"
+#include "platform/units.hpp"
 
 #include <string>
 
 namespace measurement_utils
 {
-enum class Units
-{
-  Metric = 0,
-  Imperial = 1
-};
 
 std::string_view DebugPrint(Units units);
 
-Units GetMeasurementUnits();
+/// @return vector containing the big and small units
+std::vector<Units> GetMeasurementUnits();
 
 inline double MetersToMiles(double m) { return m * 0.000621371192; }
 inline double MilesToMeters(double mi) { return mi * 1609.344; }
