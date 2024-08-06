@@ -14,6 +14,7 @@
 #include "search/editor_delegate.hpp"
 #include "search/engine.hpp"
 #include "search/locality_finder.hpp"
+#include "search/mwm_context.hpp"
 
 #include "storage/country_info_getter.hpp"
 #include "storage/storage_helpers.hpp"
@@ -607,6 +608,15 @@ search::ReverseGeocoder::Address Framework::GetAddressAtPoint(m2::PointD const &
   /// @todo Call exact address manually here?
   coder.GetNearbyAddress(pt, 0.5 /* maxDistanceM */, addr, true /* placeAsStreet */);
   return addr;
+}
+
+std::vector<search::ReverseGeocoder::Street> Framework::GetNearestStreets(FeatureType & ft, m2::PointD const & pt) const
+{
+  LOG(LERROR, ("Getting nearest street"));
+  search::ReverseGeocoder const coder(m_featuresFetcher.GetDataSource());
+  MwmSet::MwmHandle mwmHandle = m_featuresFetcher.GetDataSource().GetMwmHandleById(ft.GetID().m_mwmId);
+  search::MwmContext context(std::move(mwmHandle));
+  return coder.GetNearbyStreets(context, pt, 100);
 }
 
 void Framework::FillFeatureInfo(FeatureID const & fid, place_page::Info & info) const

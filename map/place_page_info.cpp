@@ -1,6 +1,7 @@
+#include <search/mwm_context.hpp>
 #include "map/place_page_info.hpp"
-
 #include "map/bookmark_helpers.hpp"
+#include "map/framework.hpp"
 
 #include "indexer/feature_utils.hpp"
 #include "indexer/ftypes_matcher.hpp"
@@ -10,6 +11,8 @@
 #include "platform/measurement_utils.hpp"
 #include "platform/preferred_languages.hpp"
 #include "platform/utm_mgrs_utils.hpp"
+
+#include "search/reverse_geocoder.hpp"
 
 #include "geometry/mercator.hpp"
 
@@ -71,18 +74,15 @@ void Info::SetFromFeatureType(FeatureType & ft)
     m_uiTitle = m_primaryFeatureName;
     m_uiSecondaryTitle = out.secondary;
   }
-  else
+  else if (IsBuilding())
   {
-    if (IsBuilding())
-    {
-      emptyTitle = m_address.empty();
-      if (!emptyTitle)
-        m_uiTitle = m_address;
-      m_uiAddress.clear();    // already in main title
-    }
-    else
-      emptyTitle = true;
+    emptyTitle = m_address.empty();
+    if (!emptyTitle)
+      m_uiTitle = m_address;
+    m_uiAddress.clear();    // already in main title
   }
+  else
+    emptyTitle = true;
 
   // Assign Feature's type if main title is empty.
   if (emptyTitle)
@@ -93,7 +93,18 @@ void Info::SetFromFeatureType(FeatureType & ft)
   {
     auto const lRef = GetMetadata(feature::Metadata::FMD_LOCAL_REF);
     if (!lRef.empty())
+      // TODO: replace with std::format and add string in strings.txt
       m_uiTitle.append(" (").append(lRef).append(")");
+  }
+
+  if (IsSidewalk())
+  {
+    m_primaryFeatureName="guhjn";
+    m_uiSubtitle="hinmj";
+    //need user selection point, not feature center
+    auto nearestStreet = Framework().GetNearestStreets(ft, ft.GetCenter())[0];
+    // works correctly with multi-lang?
+    m_uiTitle = "hello"; //nearestStreet.m_name;
   }
 
   m_uiSubtitle = FormatSubtitle(IsFeature() /* withTypes */, !emptyTitle /* withMainType */);
