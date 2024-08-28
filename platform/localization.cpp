@@ -1,8 +1,10 @@
 #include "platform/localization.hpp"
 
 #include "platform/settings.hpp"
+#include "platform/units.hpp"
 
 #include <string>
+#include "map"
 
 namespace platform
 {
@@ -15,30 +17,32 @@ enum class MeasurementType
   Altitude
 };
 
-LocalizedUnits const & GetLocalizedUnits(measurement_utils::Units units, MeasurementType measurementType)
+std::map<Units, std::string> length_units = {
+        {Units::Yard, "yd"},
+        {Units::Foot, "ft"},
+        {Units::Mile, "mi"},
+        {Units::Kilometer, "km"},
+        {Units::Meter, "m"}
+};
+
+std::map<Units, std::string> speed_units = {
+        {Units::Yard, "yd"},
+        {Units::Foot, "ft"},
+        {Units::Mile, "miles_per_hour"},
+        {Units::Kilometer, "kilometers_per_hour"},
+        {Units::Meter, "m"}
+};
+
+LocalizedUnits const & GetLocalizedUnits(std::vector<Units> units, MeasurementType measurementType)
 {
-  static LocalizedUnits const lengthImperial = {GetLocalizedString("ft"), GetLocalizedString("mi")};
-  static LocalizedUnits const lengthMetric = {GetLocalizedString("m"), GetLocalizedString("km")};
-
-  static LocalizedUnits const speedImperial = {GetLocalizedString("ft"), GetLocalizedString("miles_per_hour")};
-  static LocalizedUnits const speedMetric = {GetLocalizedString("m"), GetLocalizedString("kilometers_per_hour")};
-
   switch (measurementType)
   {
   case MeasurementType::Distance:
   case MeasurementType::Altitude:
-    switch (units)
-    {
-    case measurement_utils::Units::Imperial: return lengthImperial;
-    case measurement_utils::Units::Metric: return lengthMetric;
-    }
+    return {GetLocalizedString(length_units(units[0])), GetLocalizedString(length_units(units[1]))};
     break;
   case MeasurementType::Speed:
-    switch (units)
-    {
-    case measurement_utils::Units::Imperial: return speedImperial;
-    case measurement_utils::Units::Metric: return speedMetric;
-    }
+    return {GetLocalizedString(speed_units(units[0])), GetLocalizedString(speed_units(units[1]))};
   }
   UNREACHABLE();
 }
@@ -54,7 +58,7 @@ LocalizedUnits const & GetLocalizedAltitudeUnits()
   return GetLocalizedUnits(measurement_utils::GetMeasurementUnits(), MeasurementType::Altitude);
 }
 
-const std::string & GetLocalizedSpeedUnits(measurement_utils::Units units)
+const std::string & GetLocalizedSpeedUnits(Units units)
 {
   return GetLocalizedUnits(units, MeasurementType::Speed).m_high;
 }
