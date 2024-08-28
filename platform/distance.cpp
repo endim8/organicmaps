@@ -3,6 +3,7 @@
 #include "platform/locale.hpp"
 #include "platform/localization.hpp"
 #include "platform/measurement_utils.hpp"
+#include "platform/units.hpp"
 
 #include "base/assert.hpp"
 
@@ -12,52 +13,70 @@ using namespace measurement_utils;
 
 namespace
 {
-Distance MetersTo(double distance, Distance::Units units)
+Distance MetersTo(double distance, Units units)
 {
   switch (units)
   {
-  case Distance::Units::Meters:
+  case Units::Meter:
     return Distance(distance);
-  case Distance::Units::Kilometers:
-    return {distance / 1000, Distance::Units::Kilometers};
-  case Distance::Units::Feet:
-    return {MetersToFeet(distance), Distance::Units::Feet};
-  case Distance::Units::Miles:
-    return {MetersToMiles(distance), Distance::Units::Miles};
+  case Units::Kilometer:
+    return {distance / 1000, Units::Kilometer};
+  case Units::Foot:
+    return {MetersToFeet(distance), Units::Foot};
+  case Units::Mile:
+    return {MetersToMiles(distance), Units::Mile};
+  case Units::Yard:
+    return {MetersToYards(distance), Units::Yard};
   default: UNREACHABLE();
   }
 }
 
-Distance KilometersTo(double distance, Distance::Units units)
+Distance KilometersTo(double distance, Units units)
 {
   return MetersTo(distance * 1000, units);
 }
 
-Distance FeetTo(double distance, Distance::Units units)
+Distance FeetTo(double distance, Units units)
 {
   switch (units)
   {
-  case Distance::Units::Meters:
-    return {FeetToMeters(distance), Distance::Units::Meters};
-  case Distance::Units::Kilometers:
-    return {FeetToMeters(distance) / 1000, Distance::Units::Kilometers};
-  case Distance::Units::Miles:
-    return {FeetToMiles(distance), Distance::Units::Miles};
+  case Units::Meter:
+    return {FeetToMeters(distance), Units::Meter};
+  case Units::Kilometer:
+    return {FeetToMeters(distance) / 1000, Units::Kilometer};
+  case Units::Mile:
+    return {FeetToMiles(distance), Units::Mile};
+  case Units::Yard:
+    return {FeetToYards(distance), Units::Yard};
   default: UNREACHABLE();
   }
 }
 
-Distance MilesTo(double distance, Distance::Units units)
+Distance MilesTo(double distance, Units units)
 {
   switch (units)
   {
-  case Distance::Units::Meters:
-    return {MilesToMeters(distance), Distance::Units::Meters};
-  case Distance::Units::Kilometers:
-    return {MilesToMeters(distance) / 1000, Distance::Units::Kilometers};
-  case Distance::Units::Feet:
-    return {MilesToFeet(distance), Distance::Units::Feet};
+  case Units::Meter:
+    return {MilesToMeters(distance), Units::Meter};
+  case Units::Kilometer:
+    return {MilesToMeters(distance) / 1000, Units::Kilometer};
+  case Units::Foot:
+    return {MilesToFeet(distance), Units::Foot};
   default: UNREACHABLE();
+  }
+}
+
+Distance YardsTo(double distance, Units units)
+{
+  switch (units)
+  {
+    case Units::Meter:
+      return {YardsToMeters(distance), Units::Meter};
+    case Units::Kilometer:
+      return {YardsToMeters(distance) / 1000, Units::Kilometer};
+    case Units::Foot:
+      return {YardsToFeet(distance), Units::Foot};
+    default: UNREACHABLE();
   }
 }
 
@@ -73,9 +92,9 @@ double WithPrecision(double value, uint8_t precision)
 
 Distance::Distance() : Distance(-1.0) {}
 
-Distance::Distance(double distanceInMeters) : Distance(distanceInMeters, Units::Meters) {}
+Distance::Distance(double distanceInMeters) : Distance(distanceInMeters, Units::Meter) {}
 
-Distance::Distance(double distance, platform::Distance::Units units) : m_distance(distance), m_units(units) {}
+Distance::Distance(double distance, Units units) : m_distance(distance), m_units(units) {}
 
 Distance Distance::CreateFormatted(double distanceInMeters)
 {
@@ -84,8 +103,7 @@ Distance Distance::CreateFormatted(double distanceInMeters)
 
 std::string Distance::FormatAltitude(double meters)
 {
-  Distance elevation = Distance(fabs(meters)).To(
-      GetMeasurementUnits() == measurement_utils::Units::Metric ? Units::Meters : Units::Feet);
+  Distance elevation = Distance(fabs(meters)).To(GetMeasurementUnits()[1]);
 
   ASSERT(elevation.IsLowUnits(), ());
   elevation.m_distance = WithPrecision(elevation.m_distance, 0);
@@ -96,7 +114,7 @@ std::string Distance::FormatAltitude(double meters)
 
 bool Distance::IsValid() const { return m_distance >= 0.0; }
 
-bool Distance::IsLowUnits() const { return m_units == Units::Meters || m_units == Units::Feet; }
+bool Distance::IsLowUnits() const { return m_units == Units::Meter || m_units == Units::Foot; }
 
 bool Distance::IsHighUnits() const { return !IsLowUnits(); }
 
@@ -108,18 +126,18 @@ Distance Distance::To(Units units) const
   /// @todo These double switches can be replaced with 4x4 factors matrix.
   switch (m_units)
   {
-  case Units::Meters: return MetersTo(m_distance, units);
-  case Units::Kilometers: return KilometersTo(m_distance, units);
-  case Units::Feet: return FeetTo(m_distance, units);
-  case Units::Miles: return MilesTo(m_distance, units);
+  case Units::Meter: return MetersTo(m_distance, units);
+  case Units::Kilometer: return KilometersTo(m_distance, units);
+  case Units::Foot: return FeetTo(m_distance, units);
+  case Units::Mile: return MilesTo(m_distance, units);
+  case Units::Yard: return YardsTo(m_distance, units);
   default: UNREACHABLE();
   }
 }
 
 Distance Distance::ToPlatformUnitsFormatted() const
 {
-  return To(GetMeasurementUnits() == measurement_utils::Units::Metric ? Units::Meters : Units::Feet)
-      .GetFormattedDistance();
+  return To(GetMeasurementUnits()[1]).GetFormattedDistance();
 }
 
 double Distance::GetDistance() const
@@ -127,7 +145,7 @@ double Distance::GetDistance() const
   return m_distance;
 }
 
-Distance::Units Distance::GetUnits() const { return m_units; }
+Units Distance::GetUnits() const { return m_units; }
 
 std::string Distance::GetDistanceString() const
 {
@@ -148,10 +166,10 @@ std::string Distance::GetUnitsString() const
 {
   switch (m_units)
   {
-  case Units::Meters: return GetLocalizedString("m");
-  case Units::Kilometers: return GetLocalizedString("km");
-  case Units::Feet: return GetLocalizedString("ft");
-  case Units::Miles: return GetLocalizedString("mi");
+  case Units::Meter: return GetLocalizedString("m");
+  case Units::Kilometer: return GetLocalizedString("km");
+  case Units::Foot: return GetLocalizedString("ft");
+  case Units::Mile: return GetLocalizedString("mi");
   default: UNREACHABLE();
   }
 }
@@ -162,10 +180,10 @@ Distance Distance::GetFormattedDistance() const
 
   // To low units.
   Distance res;
-  if (m_units == Units::Kilometers)
-    res = To(Units::Meters);
-  else if (m_units == Units::Miles)
-    res = To(Units::Feet);
+  if (m_units == Units::Kilometer)
+    res = To(Units::Meter);
+  else if (m_units == Units::Mile)
+    res = To(Units::Foot);
   else
     res = *this;
 
@@ -179,7 +197,7 @@ Distance Distance::GetFormattedDistance() const
   if (lowRound >= 1000.0)
   {
     // To high units.
-    res = res.To(res.m_units == Units::Meters ? Units::Kilometers : Units::Miles);
+    res = res.To(res.m_units == Units::Meter ? Units::Kilometer : Units::Mile);
 
     // For distances of 10.0 high units and over round to a whole number, e.g. 9.98 -> 10, 10.9 -> 11
     uint8_t const precision = (std::round(res.m_distance * 10) / 10 >= 10.0) ? 0 : 1;
@@ -198,14 +216,15 @@ std::string Distance::ToString() const
   return GetDistanceString() + kNarrowNonBreakingSpace + GetUnitsString();
 }
 
-std::string DebugPrint(Distance::Units units)
+std::string DebugPrint(Units units)
 {
+  // missing yard
   switch (units)
   {
-  case Distance::Units::Meters: return "m";
-  case Distance::Units::Kilometers: return "km";
-  case Distance::Units::Feet: return "ft";
-  case Distance::Units::Miles: return "mi";
+  case Units::Meter: return "m";
+  case Units::Kilometer: return "km";
+  case Units::Foot: return "ft";
+  case Units::Mile: return "mi";
   default: UNREACHABLE();
   }
 }

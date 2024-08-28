@@ -3,6 +3,7 @@
 #include <string>
 
 #include "platform/measurement_utils.hpp"
+#include "platform/units.hpp"
 
 namespace platform
 {
@@ -21,6 +22,6 @@ extern std::string GetLocalizedMyPositionBookmarkName();
 extern LocalizedUnits const & GetLocalizedDistanceUnits();
 extern LocalizedUnits const & GetLocalizedAltitudeUnits();
 
-extern std::string const & GetLocalizedSpeedUnits(measurement_utils::Units units);
+extern std::string const & GetLocalizedSpeedUnits(Units units);
 extern std::string const & GetLocalizedSpeedUnits();
 }  // namespace platform

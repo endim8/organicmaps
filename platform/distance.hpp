@@ -1,6 +1,7 @@
 #pragma once
 
 #include "platform/measurement_utils.hpp"
+#include "platform/units.hpp"
 
 #include <string>
 
@@ -16,13 +17,6 @@ public:
    * \warning The values of Units shall be synchronized with values of unitLength func in
    * swift (see iphone/Maps/Classes/CarPlay/Templates Data/RouteInfo.swift for details).
    */
-  enum class Units
-  {
-    Meters = 0,
-    Kilometers = 1,
-    Feet = 2,
-    Miles = 3
-  };
 
   Distance();
 
@@ -62,6 +56,6 @@ private:
   Units m_units;
 };
 
-std::string DebugPrint(Distance::Units units);
+std::string DebugPrint(Units units);
 
 }  // namespace platform

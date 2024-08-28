@@ -26,6 +26,8 @@ inline double FeetToMiles(double ft) { return ft * 0.00018939; }
 inline double InchesToMeters(double in) { return in / 39.370; }
 inline double NauticalMilesToMeters(double nmi) { return nmi * 1852; }
 inline double constexpr KmphToMps(double kmph) { return kmph * 1000 / 3600; }
+inline double MetersToYards(double m) { return m * 0.9144; }
+inline double FeetToYards(double ft) { return ft * (1/3); }
 
 double ToSpeedKmPH(double speed, Units units);
 double MpsToUnits(double mps, Units units);
