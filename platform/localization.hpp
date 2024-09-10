@@ -15,8 +15,9 @@ struct LocalizedUnits
 std::string GetLocalizedTypeName(std::string const & type);
 std::string GetLocalizedBrandName(std::string const & brand);
 std::string GetLocalizedString(std::string const & key);
+//std::string GetLocalizedStringWithLocale(std::string const & locale, std::string const & key);
 std::string GetCurrencySymbol(std::string const & currencyCode);
-extern std::string GetLocalizedMyPositionBookmarkName();
+std::string GetLocalizedMyPositionBookmarkName();
 
 extern LocalizedUnits const & GetLocalizedDistanceUnits();
 extern LocalizedUnits const & GetLocalizedAltitudeUnits();

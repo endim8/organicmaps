@@ -120,7 +120,6 @@ else() # neither iPhone nor Android
                   @ONLY)
 
   append(SRC
-    localization_dummy.cpp
     location_service.cpp
     location_service.hpp
     network_policy_dummy.cpp
