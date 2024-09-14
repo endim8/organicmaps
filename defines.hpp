@@ -112,3 +112,5 @@
 #define LOCALIZATION_DESCRIPTION_SUFFIX " Description"
 
 #define BUILDING_PARTS_MAPPING_FILE "building_parts_mapping.bin"
+
+#define CORE_STRINGS_FILENAME "core_strings.txt"

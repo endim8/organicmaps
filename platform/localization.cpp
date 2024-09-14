@@ -52,13 +52,14 @@ LocalizedUnits const & GetLocalizedUnits(measurement_utils::Units units, Measure
 std::string GetLocalizedStringWithLocale(std::string locale, std::string key)
 {
   //where to keep platform-independent strings, and how to load/query?
-  std::string buildPath = filesystem::exists("/res/values/") ? "True" : "False";
+  std::string buildPath = base::JoinPath(GetPlatform().ResourcesDir(), "assets", CORE_STRINGS_FILENAME);
+  auto thing = filesystem::exists(buildPath)? "yes" : "no";
   return buildPath;
 }
 
 std::string GetLocalizedString(std::string const & key)
 {
-  auto locale = platform::GetCurrentLocale();
+  Locale locale = platform::GetCurrentLocale();
   return GetLocalizedStringWithLocale(locale.m_language, key);
 }
 
