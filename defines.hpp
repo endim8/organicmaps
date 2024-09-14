@@ -78,7 +78,6 @@
 #define WORLD_COASTS_FILE_NAME "WorldCoasts"
 
 #define SETTINGS_FILE_NAME "settings.ini"
-#define MARKETING_SETTINGS_FILE_NAME "marketing_settings.ini"
 
 #define SEARCH_CATEGORIES_FILE_NAME "categories.txt"
 #define SEARCH_CUISINE_CATEGORIES_FILE_NAME "categories_cuisines.txt"

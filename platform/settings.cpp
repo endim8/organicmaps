@@ -423,19 +423,4 @@ void UsageStats::EnterBackground()
   ++m_sessionsCount;
   m_ss.SetValue(m_sessions, ToString(m_sessionsCount));
 }
-
-}  // namespace settings
-
-/*
-namespace marketing
-{
-Settings::Settings() : platform::StringStorageBase(GetPlatform().SettingsPathForFile(MARKETING_SETTINGS_FILE_NAME)) {}
-
-// static
-Settings & Settings::Instance()
-{
-  static Settings instance;
-  return instance;
 }
-}  // namespace marketing
-*/
