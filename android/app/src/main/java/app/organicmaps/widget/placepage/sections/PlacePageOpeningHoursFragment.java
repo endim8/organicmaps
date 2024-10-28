@@ -102,6 +102,8 @@ public class PlacePageOpeningHoursFragment extends Fragment implements Observer<
     final boolean isEmptyTT = (timetables == null || timetables.length == 0);
     final int color = ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary);
 
+    // @TODO Need open state here.
+
     if (isEmptyTT)
     {
       // 'opening_hours' tag wasn't parsed either because it's empty or wrong format.
