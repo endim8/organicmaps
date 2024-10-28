@@ -61,5 +61,5 @@ public final class OpeningHours
    */
   public static native boolean nativeIsTimetableStringValid(String source);
 
-  public static native int nativeGetCurrentState(Timetable timetable, long dateTime);
+  public static native int nativeGetCurrentState(Timetable[] timetable, long dateTime);
 }

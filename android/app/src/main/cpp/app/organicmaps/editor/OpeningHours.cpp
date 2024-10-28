@@ -326,8 +326,11 @@ JNIEXPORT jint JNICALL
 Java_app_organicmaps_editor_OpeningHours_nativeGetCurrentState(JNIEnv * env, jclass clazz, jobjectArray jTts, jlong jDateTime)
 {
     TimeTableSet tts = NativeTimetableSet(env, jTts);
-    std::stringstream sstr;
-    //sstr << MakeOpeningHours(tts).GetInfo(jDateTime).state;
-    return 2;
+    switch(MakeOpeningHours(tts).GetInfo(jDateTime).state)
+    {
+        case RuleState::Unknown: return 0;
+        case RuleState::Open: return 1;
+        case RuleState::Closed: return 2;
+    }
 }
 } // extern "C"

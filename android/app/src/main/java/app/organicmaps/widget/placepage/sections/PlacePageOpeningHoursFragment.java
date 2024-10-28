@@ -100,10 +100,15 @@ public class PlacePageOpeningHoursFragment extends Fragment implements Observer<
     });
 
     final boolean isEmptyTT = (timetables == null || timetables.length == 0);
-    final int color = ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary);
 
-    // @TODO Need open state here.
-    int state = OpeningHours.nativeGetCurrentState(timetables[0], System.currentTimeMillis());
+    int state = OpeningHours.nativeGetCurrentState(timetables, System.currentTimeMillis());
+
+    switch(state)
+    {
+      case 0: color = ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary); // Unknown
+      case 1: color = getResources().getColor(R.color.base_green); // Open
+      case 2: color = getResources().getColor(R.color.base_red); // Closed
+    }
 
     if (isEmptyTT)
     {
