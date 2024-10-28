@@ -103,6 +103,7 @@ public class PlacePageOpeningHoursFragment extends Fragment implements Observer<
     final int color = ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary);
 
     // @TODO Need open state here.
+    int state = OpeningHours.nativeGetCurrentState(timetables[0], System.currentTimeMillis());
 
     if (isEmptyTT)
     {

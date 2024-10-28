@@ -321,4 +321,13 @@ Java_app_organicmaps_editor_OpeningHours_nativeIsTimetableStringValid(JNIEnv * e
 {
   return OpeningHours(jni::ToNativeString(env, jSource)).IsValid();
 }
+
+JNIEXPORT jint JNICALL
+Java_app_organicmaps_editor_OpeningHours_nativeGetCurrentState(JNIEnv * env, jclass clazz, jobjectArray jTts, jlong jDateTime)
+{
+    TimeTableSet tts = NativeTimetableSet(env, jTts);
+    std::stringstream sstr;
+    //sstr << MakeOpeningHours(tts).GetInfo(jDateTime).state;
+    return 2;
+}
 } // extern "C"
