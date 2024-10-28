@@ -103,12 +103,13 @@ public class PlacePageOpeningHoursFragment extends Fragment implements Observer<
 
     int state = OpeningHours.nativeGetCurrentState(timetables, System.currentTimeMillis());
 
-    switch(state)
+    int color = switch(state)
     {
-      case 0: color = ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary); // Unknown
-      case 1: color = getResources().getColor(R.color.base_green); // Open
-      case 2: color = getResources().getColor(R.color.base_red); // Closed
-    }
+      case 0 -> ThemeUtils.getColor(requireContext(), android.R.attr.textColorPrimary); // Unknown
+      case 1 -> getResources().getColor(R.color.base_green); // Open
+      case 2 -> getResources().getColor(R.color.base_red); // Closed
+      default -> throw new IllegalStateException("Unexpected value: " + state);
+    };
 
     if (isEmptyTT)
     {
