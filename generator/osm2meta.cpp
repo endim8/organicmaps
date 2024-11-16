@@ -145,7 +145,25 @@ std::string MetadataTagProcessorImpl::ValidateAndFormat_phone(std::string const 
 
 std::string MetadataTagProcessorImpl::ValidateAndFormat_opening_hours(std::string const & v)
 {
-  return v;
+  // Replace non-standard hypens with normal one.
+  std::unordered_set<char> const badHypens = {'‐', '‑', '‒', '–', '﹘', '۔', '⁃', '˗', '−', '➖', 'Ⲻ'};
+  std::string result;
+  bool inComment = false;
+
+  for (char ch : v)
+  {
+    if (ch == '"') // Don't replace in a comment
+    {
+      inComment = !inComment;
+      result += ch;
+    }
+    else if (!inComment && badHypens.count(ch))
+      result += '-';
+    else
+      result += ch;
+  }
+
+  return result;
 }
 
 std::string MetadataTagProcessorImpl::ValidateAndFormat_ele(std::string const & v) const
