@@ -100,6 +100,7 @@ struct MapcssRule
   bool Matches(std::vector<OsmElement::Tag> const & tags) const;
 
   std::vector<OsmElement::Tag> m_tags;
+  std::vector<OsmElement::Tag> m_forbiddenTags;
   std::vector<std::string> m_mandatoryKeys;
   std::vector<std::string> m_forbiddenKeys;
 };

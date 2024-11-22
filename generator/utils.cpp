@@ -123,6 +123,12 @@ search::CBV GetLocalities(std::string const & dataPath)
 
 bool MapcssRule::Matches(std::vector<OsmElement::Tag> const & tags) const
 {
+  for (auto const & tag : m_forbiddenTags)
+  {
+    if (base::AnyOf(tags, [&](auto const & t) { return t == tag; }))
+      return false;
+  }
+
   for (auto const & tag : m_tags)
   {
     if (!base::AnyOf(tags, [&](auto const & t) { return t == tag; }))
@@ -194,7 +200,18 @@ MapcssRules ParseMapCSS(std::unique_ptr<Reader> reader)
         else
         {
           ASSERT_EQUAL(tag.size(), 2, (tag));
-          rule.m_tags.emplace_back(tag[0], tag[1]);
+          ASSERT_NOT_EQUAL(tag[0].front(), '!', (tag));
+
+          // Catch '!=' rules, '=' is the delimiter so '!' will be at end of tag[0]
+          if (tag[0].back() == '!')
+          {
+            std::string strippedKey(tag[0]);
+            strippedKey.pop_back();
+            rule.m_mandatoryKeys.push_back(std::move(strippedKey));
+            rule.m_forbiddenTags.emplace_back(strippedKey, tag[1]);
+          }
+          else
+            rule.m_tags.emplace_back(tag[0], tag[1]);
         }
       });
 
