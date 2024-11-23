@@ -123,12 +123,6 @@ search::CBV GetLocalities(std::string const & dataPath)
 
 bool MapcssRule::Matches(std::vector<OsmElement::Tag> const & tags) const
 {
-  for (auto const & tag : m_forbiddenTags)
-  {
-    if (base::AnyOf(tags, [&](auto const & t) { return t == tag; }))
-      return false;
-  }
-
   for (auto const & tag : m_tags)
   {
     if (!base::AnyOf(tags, [&](auto const & t) { return t == tag; }))
@@ -146,6 +140,12 @@ bool MapcssRule::Matches(std::vector<OsmElement::Tag> const & tags) const
   for (auto const & key : m_forbiddenKeys)
   {
     if (!base::AllOf(tags, [&](auto const & t) { return t.m_key != key || t.m_value == "no"; }))
+      return false;
+  }
+
+  for (auto const & [key, forbiddenValue] : m_forbiddenTags)
+  {
+    if (base::AnyOf(tags, [&](auto const & t) { return t.m_key == key && t.m_value == forbiddenValue; }))
       return false;
   }
 
