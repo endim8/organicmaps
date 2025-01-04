@@ -453,31 +453,23 @@ public class PlacePageView extends Fragment implements View.OnClickListener,
     final String outdoorSeating = mMapObject.getMetadata(Metadata.MetadataType.FMD_OUTDOOR_SEATING);
     refreshMetadataOrHide(outdoorSeating.equals("yes") ? getString(R.string.outdoor_seating) : "", mOutdoorSeating, mTvOutdoorSeating);
 
-//    showTaxiOffer(mapObject);
+    UiUtils.showIf(Editor.nativeShouldShowEditPlace(), mEditPlace);
+    UiUtils.showIf(Editor.nativeShouldShowAddBusiness(), mAddOrganisation);
+    UiUtils.showIf(Editor.nativeShouldShowAddPlace(), mAddPlace);
+    mEditPlace.setEnabled(Editor.nativeShouldEnableEditPlace());
+    mAddOrganisation.setEnabled(Editor.nativeShouldEnableAddPlace());
+    mAddPlace.setEnabled(Editor.nativeShouldEnableAddPlace());
+    TextView mTvEditPlace = mEditPlace.findViewById(R.id.tv__editor);
+    TextView mTvAddBusiness = mAddPlace.findViewById(R.id.tv__editor);
+    TextView mTvAddPlace = mAddPlace.findViewById(R.id.tv__editor);
+    final int editPlaceButtonColor = Editor.nativeShouldEnableEditPlace() ? ContextCompat.getColor(getContext(), UiUtils.getStyledResourceId(getContext(), androidx.appcompat.R.attr.colorAccent)) : getResources().getColor(R.color.button_accent_text_disabled);
+    mTvEditPlace.setTextColor(editPlaceButtonColor);
+    mTvAddBusiness.setTextColor(editPlaceButtonColor);
+    mTvAddPlace.setTextColor(editPlaceButtonColor);
+    UiUtils.showIf(UiUtils.isVisible(mEditPlace)
+            || UiUtils.isVisible(mAddOrganisation)
+            || UiUtils.isVisible(mAddPlace), mEditTopSpace);
 
-    if (RoutingController.get().isNavigating() || RoutingController.get().isPlanning())
-    {
-      UiUtils.hide(mEditPlace, mAddOrganisation, mAddPlace, mEditTopSpace);
-    }
-    else
-    {
-      UiUtils.showIf(Editor.nativeShouldShowEditPlace(), mEditPlace);
-      UiUtils.showIf(Editor.nativeShouldShowAddBusiness(), mAddOrganisation);
-      UiUtils.showIf(Editor.nativeShouldShowAddPlace(), mAddPlace);
-      mEditPlace.setEnabled(Editor.nativeShouldEnableEditPlace());
-      mAddOrganisation.setEnabled(Editor.nativeShouldEnableAddPlace());
-      mAddPlace.setEnabled(Editor.nativeShouldEnableAddPlace());
-      TextView mTvEditPlace = mEditPlace.findViewById(R.id.tv__editor);
-      TextView mTvAddBusiness = mAddPlace.findViewById(R.id.tv__editor);
-      TextView mTvAddPlace = mAddPlace.findViewById(R.id.tv__editor);
-      final int editPlaceButtonColor = Editor.nativeShouldEnableEditPlace() ? ContextCompat.getColor(getContext(), UiUtils.getStyledResourceId(getContext(), androidx.appcompat.R.attr.colorAccent)) : getResources().getColor(R.color.button_accent_text_disabled);
-      mTvEditPlace.setTextColor(editPlaceButtonColor);
-      mTvAddBusiness.setTextColor(editPlaceButtonColor);
-      mTvAddPlace.setTextColor(editPlaceButtonColor);
-      UiUtils.showIf(UiUtils.isVisible(mEditPlace)
-                     || UiUtils.isVisible(mAddOrganisation)
-                     || UiUtils.isVisible(mAddPlace), mEditTopSpace);
-    }
     updateLinksView();
     updateOpeningHoursView();
     updateWikipediaView();
